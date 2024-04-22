@@ -66,6 +66,11 @@ inputs:
     description: 'Additional item for cache path'
     required: false
 
+  cache-save-always:
+    description: 'Save the cache even if the workflow fails'
+    default: 'false'
+    required: false
+
   # maven version
   maven-version:
     description: 'The Maven version to set up'
@@ -117,6 +122,7 @@ runs:
           ${{ inputs.cache-path-add }}
         key: ${{ inputs.cache-prefix }}${{ runner.os }}-jdk${{ inputs.java-version }}-${{ inputs.java-distribution }}-maven${{ inputs.maven-version }}-${{ hashFiles('**/pom.xml') }}
         restore-keys: ${{ inputs.cache-prefix }}${{ runner.os }}-jdk${{ inputs.java-version }}-${{ inputs.java-distribution }}-maven${{ inputs.maven-version }}-
+        save-always: ${{ inputs.cache-save-always }}
 
     - name: Installed Maven version
       run:  echo "version=$(mvn -q -v)" >> $GITHUB_OUTPUT
